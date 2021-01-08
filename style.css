@@ -1,0 +1,17 @@
+body {
+    background-color: black;
+}
+
+#score-box {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    color: aqua;
+    margin: 5px;
+    user-select: none;
+}
+
+.starting {
+    width: 60%;
+    height: auto;
+}
