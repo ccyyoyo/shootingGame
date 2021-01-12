@@ -1,7 +1,13 @@
 $(document).ready(()=>{
+    // $(".menu")fadeIn(5000);
+
     //使用canvas的第一步，抓到html裡的canvas
     const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
+    const c = canvas.getContext('2d')
+
+    //困難度easy:0,normal:1,hard:2,insane:3
+    var diff = 0;
+    console.log(diff)
 
     //設定畫布大小
     canvas.width = innerWidth-10
@@ -112,13 +118,13 @@ const c = canvas.getContext('2d')
     //玩家位置
     var playerx = canvas.width/2
     var playery = canvas.height/2
-    let player = new Player(playerx,playery,30,'white')
+    let player = new Player(playerx,playery,20,'white')
     let projectiles = []
     let enemies = []
     let particles = []
 
     function init(){
-        player = new Player(playerx,playery,30,'white')
+        player = new Player(playerx,playery,20,'white')
 
         //清空array
         projectiles = []
@@ -130,9 +136,27 @@ const c = canvas.getContext('2d')
     }
 
     // const projectile = new Projectile(playerx,playery,5,'red',{x:1,y:1})
-
+    
+    var t = 0
+    
+    var spawnTime = 1000
+    var spawnEnemyInterval
     function spawnE(){
-        setInterval(()=> {
+        if(diff == 0){
+            spawnTime = 1000
+        }else{
+            if (diff == 1) {
+            spawnTime = 500
+        } else {
+            if(diff == 2){
+                spawnTime = 200
+            }else{
+                spawnTime = 150
+            }
+            
+        }} 
+        spawnEnemyInterval = setInterval(()=> {
+            console.log(t+=1)
             const r = Math.random() * 30 + 10
             let x
             let y
@@ -151,14 +175,20 @@ const c = canvas.getContext('2d')
                     y : Math.sin(angle)
             }
             const vc = 3*Math.random()+2
-            enemies.push(new Enemy(x,y,r,c,v,vc))},1000)
+
+            
+            console.log(spawnTime)
+            enemies.push(new Enemy(x,y,r,c,v,vc))},spawnTime)
 
     }
 
     let animationId
     let score = 0
+    
     function animate(){
+        
         animationId = requestAnimationFrame(animate)  //每1ms左右執行一次
+        //console.log(enemies)
         c.fillStyle = 'rgba(0,0,0,0.1)'
         c.fillRect(0,0,canvas.width,canvas.height) //清除先前在範圍裡繪製內容(座標x,y,大小w,h)
         player.update()   //因為每次清除所以每次都要畫人物
@@ -195,7 +225,29 @@ const c = canvas.getContext('2d')
                 cancelAnimationFrame(animationId)
                 $('#startingBox').toggle()
                 $('#bigScore').text(score)
+                clearInterval(spawnEnemyInterval);
             }
+
+            var hitOnScore = 200
+            var vanishScore = 500
+        //     if(diff == 0){
+        //         hitOnScore = 200
+        //         vanishScore = 500
+        //     }else{
+        //         if (diff == 1) {
+        //             hitOnScore = 100
+        //             vanishScore = 400
+        //     } else {
+        //         if(diff == 2){
+        //             hitOnScore = 100
+        //             vanishScore = 400
+        //         }else{
+        //             hitOnScore = 100
+        //             vanishScore = 500
+        //         }
+        //     }
+        // }
+
             projectiles.forEach(
                 (projectile,pIndex) =>{
                     const dist = Math.hypot(projectile.x - enemy.x,projectile.y - enemy.y)
@@ -215,7 +267,7 @@ const c = canvas.getContext('2d')
 
                         if(enemy.radius - 10 > 10){
                             //打中漸漸變小(gsap libary)
-                            score += 100
+                            score += hitOnScore
                             $("#score").text(score)
                             gsap.to(enemy,{
                                 radius:enemy.radius - 10
@@ -226,7 +278,7 @@ const c = canvas.getContext('2d')
                         }else{
                             setTimeout(()=>{
                                 //remove enemy
-                                score += 200
+                                score += vanishScore
                                 $("#score").text(score)
                                 enemies.splice(index,1)
                                 projectiles.splice(pIndex,1)
@@ -238,13 +290,21 @@ const c = canvas.getContext('2d')
                 }
             )
         })
+
+        if(score >= 10000){
+            $('#wlc').html("<h1>GOOD JOB！</h1>")
+            cancelAnimationFrame(animationId)
+            $('#startingBox').toggle()
+            $('#bigScore').text(score)
+            clearInterval(spawnEnemyInterval);
+        }
     }
 
     window.addEventListener('keydown', function(e){ //要設定步行跑出去 + 關卡(速度或出兵率)
         var keyID = e.code;
         var plyvc = 60
         if(keyID === 'KeyW' && player.y - 2*player.radius > 0)  {
-            console.log(player.y)
+            //console.log(player.y)
             gsap.to(player,{
                 y:player.y - plyvc
             })
@@ -273,19 +333,79 @@ const c = canvas.getContext('2d')
         //console.log(score)
         const angle = Math.atan2(event.clientY - player.y, event.clientX - player.x)
         const velocity = {
-            x : Math.cos(angle)*6,
-            y : Math.sin(angle)*6
+            x : Math.cos(angle)*10,
+            y : Math.sin(angle)*10
         }
-        projectiles.push(new Projectile(player.x,player.y,8,'red',velocity))
+        projectiles.push(new Projectile(player.x,player.y,6,'red',velocity))
         
     }
     )
 
+
+    //點擊
     $("#startGameBtn").click(()=>{
         init();
         animate();
         spawnE();
+        t = 0
         //$('#startingBox').style.display = 'none'
         $('#startingBox').hide(200);
+        $('#wlc').html("<h1>Oh no, you got hit！</h1>")
+        $('#sg').hide()
+        $('#sg1').hide()
         })
+
+    $("#diffBtn").click(()=>{
+        $('#startingBox').hide();
+        $('#diff').fadeIn(800);
+        })
+
+    $("#controlsBtn").click(()=>{
+        $('#startingBox').hide();
+        $('#controls').fadeIn(800);
+        })
+
+    $("#top3Btn").click(()=>{
+        $('#startingBox').hide();
+        $('#top3').fadeIn(800);
+        })
+    
+    $("#back").click(()=>{
+        $('#controls').hide();
+        $('#top3').hide();
+        $('#startingBox').fadeIn(800);
+        })
+
+    $("#back1").click(()=>{
+        $('#controls').hide();
+        $('#top3').hide();
+        $('#startingBox').fadeIn(800);
+        })
+
+    $("#back2").click(()=>{
+        
+        $('#diff').hide();
+        $('#startingBox').fadeIn(800);
+        })
+
+    $("#easy").click(()=>{
+        diff = 0
+        console.log(diff)
+        })
+
+    $("#norm").click(()=>{
+        diff = 1
+        console.log(diff)
+        })
+
+    $("#hard").click(()=>{
+        diff = 2
+        console.log(diff)
+        })
+
+    $("#insane").click(()=>{
+        diff = 3
+        console.log(diff)
+        })
+
 })

@@ -11,7 +11,89 @@ body {
     user-select: none;
 }
 
-.starting {
-    width: 60%;
+#startingBox {
+    width: 100%;
+}
+
+.menu {
+    display: none;
+    width: 50%;
     height: auto;
+    background-color: #FFFFFF;
+}
+
+.btnMenu {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    flex-direction: column;
+}
+
+.btn {
+    width: 121px;
+    margin: 2px;
+}
+
+#wasd {
+    margin-left: 54px;
+    width: 200px;
+    height: auto;
+}
+
+#mouse {
+    width: 150px;
+    margin-left: 10px;
+    padding-bottom: 10px;
+}
+
+
+
+#back {
+    position: relative;
+    height: 50px;
+    border-radius: 50%;
+    border: black 1px solid;
+    top: 50px;
+    left: 10px;
+}
+
+#back1 {
+    position: relative;
+    height: 50px;
+    border-radius: 50%;
+    border: black 1px solid;
+
+}
+
+#back2 {
+    position: relative;
+    height: 50px;
+    border-radius: 50%;
+    border: black 1px solid;
+
+}
+
+#top3list li {
+    font-size: 25px;
+    margin: 30px;
+}
+
+#controls {
+    display: none;
+    width: 100%;
+}
+
+#top3 {
+    display: none;
+    width: 100%;
+}
+
+#diff {
+    display: none;
+    width: 100%;
+}
+
+#diff .btn-group {
+    margin-bottom: 30px;
+    width: 100%;
 }

@@ -15,18 +15,54 @@
             margin: 0;
         }
     </style>
+    
     <div class="fixed-top" id="score-box">
         <span>Score: </span>
         <span id="score">0</span>
     </div>
 
-    <div class="position-absolute top-50 start-50 translate-middle d-flex starting" >
-        <div class="bg-light w-100 p-3 text-center" id="startingBox" >
+
+    <div class="position-absolute top-50 start-50 translate-middle d-flex menu" >
+        <div class="p-3 text-center" id="startingBox" >
+            <h1 id="wlc">Welcome！</h1>
+            <h2 id="sg">This is just a shooting game</h2>
+            <h2 id="sg1">Try to get 10000 points！</h2>
             <h1 class="fs-1 fw-bolder p-1 mb-0 pb-0" id="bigScore">0</h1>
             <p>points</p>
-            <div>
+            <div class="btnMenu">
                 <button type="button" class="btn btn-primary" id="startGameBtn">START GAME</button>
+                <button type="button" class="btn btn-primary" id="diffBtn">DIFFICULTY</button>
+                <button type="button" class="btn btn-primary" id="controlsBtn">CONTROLS</button>
+                <button type="button" class="btn btn-primary" id="top3Btn">THE TOP 3</button>
             </div>
+        </div>
+        
+        <div class="p-3 text-center" id="diff">
+            <h1 >DIFFICULTY</h1>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <button class="btn btn-info" id="easy">EASY</button>
+                <button class="btn btn-info" id="norm">NORMAL</button>
+                <button class="btn btn-info" id="hard">HARD</button>
+                <button class="btn btn-info" id="insane">INSANE</button>
+            </div>
+            <img src="./img/back.png" alt="" id="back2"> 
+        </div>
+
+        <div class="p-3 text-center" id="controls">
+            <h1 >CONTROLS</h1>
+            <img src="./img/wasd.jpg" alt="" id="wasd">
+            <img src="./img/mouse.jpg" alt="" id="mouse">
+            <img src="./img/back.png" alt="" id="back"> 
+        </div>
+        
+        <div class="p-3 text-center" id="top3">
+            <h1>TOP 3</h1>
+            <ol id="top3list">
+                <li>AAAA: <span>5000</span></li>
+                <li>BBBB: <span>4500</span></li>
+                <li>CCCC: <span>4000</span></li>
+            </ol>
+            <img src="./img/back.png" alt="" id="back1"> 
         </div>
     </div>
 
